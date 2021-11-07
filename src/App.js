@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import loremParagraphs from "./loremParagraphs";
+import LoremSection from "./LoremSection";
+import Form from "./Form";
 
 function App() {
+  const [amount, setAmount] = useState(0);
+  const [text, setText] = useState([]);
+
+  const formOnChange = (e) => {
+    setAmount(e.target.value);
+  };
+
+  const formHandleSubmit = (e) => {
+    e.preventDefault();
+    let count = Number(amount);
+    if (amount > loremParagraphs.length) {
+      count = loremParagraphs.length;
+    }
+    if (amount < 0) {
+      count = 0;
+    }
+    setText(loremParagraphs.slice(0, count));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <h1>TIRED OF BORING LOREM IPSUM?</h1>
+      <Form
+        formHandleSubmit={formHandleSubmit}
+        amount={amount}
+        formOnChange={formOnChange}
+      />
+      <LoremSection text={text} />
+    </main>
   );
 }
 
